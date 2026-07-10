@@ -92,15 +92,36 @@ if (loginBtn) {
 
         try {
 
-            await signInWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
+            const userCredential = await signInWithEmailAndPassword(
+    auth,
+    email,
+    password
+);
 
-            alert("Welcome!");
+const user = userCredential.user;
 
-            window.location = "index.html";
+
+const userDoc = await getDoc(
+    doc(db, "users", user.uid)
+);
+
+
+if(userDoc.exists()){
+
+    const role = userDoc.data().role;
+
+
+    if(role === "admin"){
+
+        window.location = "admin.html";
+
+    } else {
+
+        window.location = "dashboard.html";
+
+    }
+
+}
 
         }
 
