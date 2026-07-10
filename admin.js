@@ -6,9 +6,10 @@ import {
 import {
     collection,
     addDoc,
-    getDocs
+    getDocs,
+    doc,
+    getDoc
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
-
 
 // =========================
 // Create Exam
@@ -53,30 +54,44 @@ button.addEventListener("click", async () => {
 
 const answersList = document.getElementById("answersList");
 
-try {
+const snapshot = await getDocs(
+    collection(db, "answers")
+);
 
-    const snapshot = await getDocs(
-        collection(db, "answers")
+for (const answerDoc of snapshot.docs) {
+
+    const answer = answerDoc.data();
+
+    const studentDoc = await getDoc(
+        doc(db, "users", answer.studentId)
     );
 
-    snapshot.forEach((doc) => {
+    const examDoc = await getDoc(
+        doc(db, "exams", answer.examId)
+    );
 
-        const answer = doc.data();
+    const studentName = studentDoc.exists()
+        ? studentDoc.data().name
+        : "Unknown Student";
 
-        answersList.innerHTML += `
-            <div style="border:1px solid #ccc;padding:10px;margin:10px;border-radius:8px;">
-                <h3>Student ID</h3>
-                <p>${answer.studentId}</p>
+    const examTitle = examDoc.exists()
+        ? examDoc.data().title
+        : "Unknown Exam";
 
-                <h4>Answers</h4>
-                <p>${answer.answers.join("<br>")}</p>
-            </div>
-        `;
+    answersList.innerHTML += `
 
-    });
+    <div style="border:1px solid #ccc;padding:15px;margin:15px;border-radius:10px;">
 
-} catch (error) {
+        <h2>${studentName}</h2>
 
-    console.log(error);
+        <h3>${examTitle}</h3>
 
-}
+        <h4>Answers</h4>
+
+        <p>${answer.answers.join("<br><br>")}</p>
+
+    </div>
+
+    `;
+
+        }
