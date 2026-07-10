@@ -8,10 +8,9 @@ import {
 
 import {
     doc,
-    setDoc
+    setDoc,
+    getDoc
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
-
-
 // ---------- REGISTER ----------
 
 const registerBtn = document.getElementById("registerBtn");
@@ -36,12 +35,27 @@ await createUserWithEmailAndPassword(
 const user = userCredential.user;
 
 
+let role = "student";
+
+const adminDoc = await getDoc(
+    doc(db, "settings", "admin")
+);
+
+if (adminDoc.exists()) {
+
+    if (email === adminDoc.data().email) {
+        role = "admin";
+    }
+
+}
+
+
 await setDoc(
     doc(db, "users", user.uid),
     {
         name: document.getElementById("name").value,
         email: email,
-        role: "student",
+        role: role,
         createdAt: new Date()
     }
 );
