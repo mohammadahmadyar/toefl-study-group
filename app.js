@@ -1,8 +1,15 @@
 import {
     auth,
+    db,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword
 } from "./firebase.js";
+
+
+import {
+    doc,
+    setDoc
+} from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 
 // ---------- REGISTER ----------
@@ -18,12 +25,26 @@ if (registerBtn) {
         const password = document.getElementById("password").value;
 
         try {
+const userCredential =
+await createUserWithEmailAndPassword(
+    auth,
+    email,
+    password
+);
 
-            await createUserWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
+
+const user = userCredential.user;
+
+
+await setDoc(
+    doc(db, "users", user.uid),
+    {
+        name: document.getElementById("name").value,
+        email: email,
+        role: "student",
+        createdAt: new Date()
+    }
+);
 
             alert("Account created successfully.");
 
