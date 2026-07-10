@@ -48,6 +48,34 @@ button.addEventListener("click", async ()=>{
         console.log(error);
 
     }
+const answersList =
+document.getElementById("answersList");
+
+
+const snapshot =
+await getDocs(
+    collection(db,"answers")
+);
+
+
+snapshot.forEach((doc)=>{
+
+    const answer =
+    doc.data();
+
+
+    answersList.innerHTML += `
+
+    <div style="border:1px solid #ccc;padding:10px;margin:10px;">
+
+        <h3>${answer.studentId}</h3>
+
+        <p>${answer.answers.join("<br>")}</p>
+
+    </div>
+
+    `;
+
 
 
 });
