@@ -10,41 +10,44 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 
-
-document.getElementById("addExam")
-.addEventListener("click", async()=>{
+const button = document.getElementById("addExam");
 
 
-const title =
-document.getElementById("examTitle").value;
+button.addEventListener("click", async ()=>{
 
 
-const question =
-document.getElementById("question").value;
+    try {
 
 
+        const title =
+        document.getElementById("examTitle").value;
 
-await addDoc(
-collection(db,"exams"),
-{
 
-title:title,
-
-questions:[
-question
-],
-
-date:new Date(),
-
-createdBy:auth.currentUser.uid
-
-}
-
-);
+        const question =
+        document.getElementById("question").value;
 
 
 
-alert("Exam created");
+        await addDoc(
+            collection(db,"exams"),
+            {
+                title: title,
+                questions: [question],
+                createdBy: auth.currentUser.uid,
+                date: new Date()
+            }
+        );
+
+
+        alert("Exam created successfully");
+
+
+    } catch(error){
+
+        alert(error.message);
+        console.log(error);
+
+    }
 
 
 });
