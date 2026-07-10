@@ -25,18 +25,23 @@ examsSnapshot.forEach((doc)=>{
 
 
     examList.innerHTML += `
+<div>
 
-    <div>
+<h3>${exam.title}</h3>
 
-        <h3>${exam.title}</h3>
+<button onclick="startExam('${doc.id}')">
+Start Test
+</button>
 
-        <button>
-        Start Test
-        </button>
-
-    </div>
-
-    `;
+</div>
+`;
 
 
 });
+window.startExam = function(id){
+
+    localStorage.setItem("examId", id);
+
+    window.location = "exam.html";
+
+}
