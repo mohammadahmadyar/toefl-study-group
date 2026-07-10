@@ -6,9 +6,9 @@ import {
 
 import {
     collection,
-    addDoc
+    addDoc,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
-
 
 const button = document.getElementById("addExam");
 
