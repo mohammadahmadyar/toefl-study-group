@@ -65,7 +65,7 @@ if (loginBtn) {
 
             alert("Welcome!");
 
-            window.location = "Index.html";
+            window.location = "index.html";
 
         }
 
